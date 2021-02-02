@@ -11,21 +11,20 @@ class CNN(nn.Module):
         output = 3
         init = "orthogonal"
         
-        # TODO : make sure it outputs the correct size!
-        self.net = nn.Sequential( #3x28x28
-            nn.Conv2d(c, 40, (9, 9), padding=(4,4)), #40x28x28
+        self.net = nn.Sequential( #3x64x64
+            nn.Conv2d(c, 20, (3, 3), padding=(1,1)), #20x64x64
             nn.ReLU(),
-            nn.Conv2d(40, 60, (9, 9), padding=(4,4)), #60x28x28
+            nn.MaxPool2d(kernel_size=2, stride=2), #10x32x32
+            nn.Conv2d(20, 40, (3, 3), padding=(1,1)), #40x32x32
             nn.ReLU(),
-            nn.Conv2d(60, 80, (9, 9), padding=(3,3)), #80x26x26
+            nn.MaxPool2d(kernel_size=2, stride=2), #40x16x16
+            nn.Conv2d(40, 20, (3, 3), padding=(1,1)), #20x16x16
             nn.ReLU(),
-            nn.Conv2d(80, 60, (9, 9), padding=(3,3)), #60x24x24
+            nn.MaxPool2d(kernel_size=2, stride=2), #10x8x8
+            nn.Conv2d(20, 10, (3, 3), padding=(1,1)), #10x8x8
             nn.ReLU(),
-            nn.Conv2d(60, 40, (5, 5), padding=(1,1)), #40x22x22
-            nn.ReLU(),
-            nn.Conv2d(40, 20, (5, 5), padding=(1,1)), #40x20x20
-            nn.ReLU(),
-            nn.Conv2d(20, output, (20,20), padding=(0,0)) #10x1x1
+            nn.MaxPool2d(kernel_size=2, stride=2), #10x4x4
+            nn.Conv2d(10, 3, (4, 4), padding=(0,0)), #3x1x1
         )
     
     def forward(self, x):
